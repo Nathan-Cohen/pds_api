@@ -15,11 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from rest_framework.urlpatterns import format_suffix_patterns
 from api import views
+from rest_framework_swagger.views import get_swagger_view
+
+schema_view = get_swagger_view(title='Base PDS API')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('pdsListe/', views.pdsListe.as_view()),
-    path('pds/<int:id>/', views.details_pds.as_view()),
+    path('base_pds/api/', views.pdsListe.as_view()),
+    path('fiche_profil/<int:id>/', views.details_pds.as_view()),
+    path('base_pds/pds/', views.base_pds),
+    path('schemaApi/', schema_view),
 ]

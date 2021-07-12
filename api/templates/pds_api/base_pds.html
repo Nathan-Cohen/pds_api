@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Base PDS</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.5.0.js" integrity="sha256-r/AaFHrszJtwpe+tHyNi/XCfMxYpbsRg2Uqn0x3s2zc=" crossorigin="anonymous"></script>
+        {% load static %}
+        <script src="{% static 'pds_api/js/base_pds.js' %}"></script>
+    </head>
+    <body>
+        <div class="mb-3 col-sm">
+            <div class="card" style="margin: auto;">
+                <div class="card-body">
+                    <h1 class="card-title">Base PDS</h1>
+                     <div id="listePDS">
+                         <!-- Bouton de création d'un pds -->
+                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalCreationPDS">
+                             <i class="fa fa-plus"></i>
+                             <span>Créer nouveau PDS</span>
+                        </button>
+                         <!-- Liste des PDS -->
+                         <div class="container-fluid">
+                          <table class="table">
+                            <thead>
+                              <tr>
+                                <th>ID</th>
+                                <th>Prenom</th>
+                                <th>Nom</th>
+                                <th>Mail</th>
+                                <th>Adresse</th>
+                                <th>Editer</th>
+                              </tr>
+                            </thead>
+                            <tbody id='tableContents'>
+                            </tbody>
+                          </table>
+
+                        </div>
+                     </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Modal Creation PDS-->
+        <div class="modal fade" id="modalCreationPDS" tabindex="-1" role="dialog" aria-labelledby="modalCreationPDS" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Création PDS</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">Prenom</span>
+                  </div>
+                  <input id="prenom" type="text" class="form-control" placeholder="Prenom" aria-label="Prenom" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">Nom</span>
+                  </div>
+                  <input id="nom" type="text" class="form-control" placeholder="Nom" aria-label="Nom" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">Mail</span>
+                  </div>
+                  <input id="mail" type="text" class="form-control" placeholder="Mail" aria-label="Mail" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">Adresse</span>
+                  </div>
+                  <input id="adresse" type="text" class="form-control" placeholder="Adresse" aria-label="Adresse" aria-describedby="basic-addon1">
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="savePds();">Sauvegarder</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+        <!-- Modal Edition PDS-->
+        <div class="modal fade" id="modalEditPDS" tabindex="-1" role="dialog" aria-labelledby="modalEditPDS" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Fiche profil</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">Prenom</span>
+                  </div>
+                  <input id="editPrenom" type="text" class="form-control" placeholder="Prenom" aria-label="Prenom" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">Nom</span>
+                  </div>
+                  <input id="editNom" type="text" class="form-control" placeholder="Nom" aria-label="Nom" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">Mail</span>
+                  </div>
+                  <input id="editMail" type="text" class="form-control" placeholder="Mail" aria-label="Mail" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">Adresse</span>
+                  </div>
+                  <input id="editAdresse" type="text" class="form-control" placeholder="Adresse" aria-label="Adresse" aria-describedby="basic-addon1">
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" onclick="saveEditPds('delete');">Supprimer</button>
+                <button type="button" class="btn btn-primary" onclick="saveEditPds('save');">Sauvegarder</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    </body>
+</html>
