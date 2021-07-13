@@ -1,3 +1,4 @@
+
 var listePDS
 var idPDS
 
@@ -37,7 +38,7 @@ function savePds(){
     "prenom": prenom,
     "nom": nom,
     "mail": mail,
-    "adresse": adresse
+    "adresse": adresse,
     }
     data = JSON.stringify(data);
     var url = '../../base_pds/api/'
@@ -50,15 +51,16 @@ function savePds(){
       data: data,
       success: function(data,status){
       //Si data (mail unique) est rempli ont affiche le message d'erreur
-        if(data){
-            alert(data);
-        }
-        else{
+        if(data.id){
             document.getElementById('prenom').value = ""
             document.getElementById('nom').value = ""
             document.getElementById('mail').value = ""
             document.getElementById('adresse').value = ""
             $('#modalCreationPDS').modal('hide');
+        }
+        // Sinon on affiche le message d'erreur
+        else{
+            alert(data);
         }
 
       },
@@ -133,7 +135,14 @@ function saveEditPds(action){
           },
           data: data,
           success: function(data,status){
-            $('#modalEditPDS').modal('hide');
+            // Si l'adresse mail n'existe pas
+            if(data.id){
+                $('#modalEditPDS').modal('hide');
+            }
+            // Sinon on affiche le message d'erreur
+            else{
+                alert(data)
+            }
           },
           error: function(data){
             console.log(data);

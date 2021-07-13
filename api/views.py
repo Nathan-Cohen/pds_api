@@ -65,9 +65,6 @@ class details_pds(GenericAPIView):
     def patch(self, request, id):
         """
         Mise à jour PDS
-        
-        parameters:
-        
         """
         # Recupère les données envoyés
         data = request.data
@@ -76,18 +73,21 @@ class details_pds(GenericAPIView):
             pds1 = Pds.objects.get(pk=id)
         except Pds.DoesNotExist:
             return JsonResponse({'message': 'Ce PDS n\'existe pas'}, status=status.HTTP_404_NOT_FOUND)
+        # Vérifie que le mail est unique et exclu le PDS en cours de modification
+        mailUnique = Pds.objects.all().filter(supprimer=False, mail=data['mail']).exclude(id=pds1.id)
+        if len(mailUnique) == 0:
+            # Met à jour les champs modifiés
+            pds1.prenom = data.get("prenom", pds1.prenom)
+            pds1.nom = data.get("nom", pds1.nom)
+            pds1.mail = data.get("mail", pds1.mail)
+            pds1.adresse = data.get("adresse", pds1.adresse)
 
-        # Met à jour les champs modifiés
-        pds1.prenom = data.get("prenom", pds1.prenom)
-        pds1.nom = data.get("nom", pds1.nom)
-        pds1.mail = data.get("mail", pds1.mail)
-        pds1.adresse = data.get("adresse", pds1.adresse)
-
-        pds_serializer = pdsSerializers(pds1, data=data, partial=True)
-        if pds_serializer.is_valid():
-            pds_serializer.save()
-            return JsonResponse(pds_serializer.data, status=status.HTTP_200_OK)
-        return JsonResponse(pds_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            pds_serializer = pdsSerializers(pds1, data=data, partial=True)
+            if pds_serializer.is_valid():
+                pds_serializer.save()
+                return JsonResponse(pds_serializer.data, status=status.HTTP_200_OK)
+            return JsonResponse(pds_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return HttpResponse("Adresse mail déjà utilisé", status=status.HTTP_200_OK)
 
 def base_pds(request):
     return render(request, 'pds_api/base_pds.html')
