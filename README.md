@@ -9,13 +9,13 @@ Ensuite, comme s’il a été réellement supprimé de la base de données, il n
 
 * **URL**
   * http://127.0.0.1:8000/base_pds/api/
-   * `GET` Affiche la liste des PDS
-   * `POST` Créer un nouveau PDS
+    * `GET` Affiche la liste des PDS
+    * `POST` Créer un nouveau PDS
   * http://127.0.0.1:8000/fiche_profil/{id}/
-   * `GET` Affiche le détails d'un PDS
-   * `PATCH` Met à jour un PDS
+    * `GET` Affiche le détails d'un PDS
+    * `PATCH` Met à jour un PDS
   * http://127.0.0.1:8000/schemaApi/
-   * `GET` Affiche la documentation API
+    * `GET` Affiche la documentation API
 
 * **Method:**
   
