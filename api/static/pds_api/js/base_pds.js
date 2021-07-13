@@ -29,6 +29,8 @@ setInterval(listePDS, 1000);
 
 //Sauvegarder un nouveau PDS
 function savePds(){
+
+
     var prenom = document.getElementById('prenom').value
     var nom = document.getElementById('nom').value
     var mail = document.getElementById('mail').value
@@ -46,7 +48,7 @@ function savePds(){
       type: "POST",
       url: url,
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
       data: data,
       success: function(data,status){
