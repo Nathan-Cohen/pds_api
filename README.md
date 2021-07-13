@@ -17,13 +17,13 @@ Ensuite, comme s’il a été réellement supprimé de la base de données, il n
   * http://127.0.0.1:8000/schemaApi/
     * `GET` Affiche la documentation API
 
-* **Method:**
+* **Méthode:**
 
   `GET` | `POST` | `PATCH`
   
 *  **URL Params**
 
-   **Required:**
+   **Obligatoire:**
  
    `id`
 
