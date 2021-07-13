@@ -18,8 +18,6 @@ Ensuite, comme s’il a été réellement supprimé de la base de données, il n
     * `GET` Affiche la documentation API
 
 * **Method:**
-  
-  <_The request type_>
 
   `GET` | `POST` | `PATCH`
   
