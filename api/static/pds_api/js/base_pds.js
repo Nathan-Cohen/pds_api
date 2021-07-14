@@ -10,13 +10,14 @@ function listePDS(){
       url: url,
       dataType: "json",
       success: function(data,status){
+      console.log(data)
       //Récupère la liste des PDS dans une variable globale
         listePDS = data;
         //vide le tableau pour le remplir a nouveau
         var table = document.getElementById('tableContents');
         table.innerHTML = ""
         data.forEach(function(item){
-            table.innerHTML += '<tr><td>'+item.id+'</td><td>'+item.prenom+'</td><td>'+item.nom+'</td><td>'+item.mail+'</td><td>'+item.adresse+'</td><td><button type="button" class="btn btn-primary" onclick="editPds('+item.id+');">Editer</button></td></tr>';
+            table.innerHTML += '<tr><td>'+item.id+'</td><td>'+item.firstname+'</td><td>'+item.lastname+'</td><td>'+item.email+'</td><td>'+item.address+'</td><td><button type="button" class="btn btn-primary" onclick="editPds('+item.id+');">Editer</button></td></tr>';
         })
       },
       error: function(data){
@@ -25,11 +26,10 @@ function listePDS(){
     });
 }
 listePDS()
-setInterval(listePDS, 1000);
+//setInterval(listePDS, 1000);
 
 //Sauvegarder un nouveau PDS
 function savePds(){
-
 
     var prenom = document.getElementById('prenom').value
     var nom = document.getElementById('nom').value
@@ -37,10 +37,10 @@ function savePds(){
     var adresse = document.getElementById('adresse').value
 
     data = {
-    "prenom": prenom,
-    "nom": nom,
-    "mail": mail,
-    "adresse": adresse,
+    "firstname": prenom,
+    "lastname": nom,
+    "email": mail,
+    "address": adresse,
     }
     data = JSON.stringify(data);
     var url = '../../base_pds/api/'
@@ -81,10 +81,10 @@ function editPds(id){
     $('#modalEditPDS').modal('show');
     listePDS.forEach(function(item){
         if(id == item.id){
-            document.getElementById('editPrenom').value = item.prenom
-            document.getElementById('editNom').value = item.nom
-            document.getElementById('editMail').value = item.mail
-            document.getElementById('editAdresse').value = item.adresse
+            document.getElementById('editPrenom').value = item.firstname
+            document.getElementById('editNom').value = item.lastname
+            document.getElementById('editMail').value = item.email
+            document.getElementById('editAdresse').value = item.address
         }
     })
 }
@@ -121,10 +121,10 @@ function saveEditPds(action){
         var adresse = document.getElementById('editAdresse').value
 
         data = {
-        "prenom": prenom,
-        "nom": nom,
-        "mail": mail,
-        "adresse": adresse
+        "firstname": prenom,
+        "lastname": nom,
+        "email": mail,
+        "address": adresse
         }
         data = JSON.stringify(data);
         var url = '../../fiche_profil/'+idPDS+'/'

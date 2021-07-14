@@ -20,7 +20,7 @@ class pdsListe(GenericAPIView):
         Liste PDS
         """
         # sélectionne tous les PDS qui ne sont pas marqués comme supprimer
-        pds1 = Pds.objects.all().filter(supprimer=False)
+        pds1 = Pds.objects.filter(deleted=False)
         pds1_serializer = pdsSerializers(pds1, many=True)
         return Response(pds1_serializer.data)
 
@@ -31,7 +31,7 @@ class pdsListe(GenericAPIView):
         """
         pds1 = JSONParser().parse(request)
         #Vérifie que le mail est unique
-        mailUnique = Pds.objects.all().filter(supprimer=False, mail=pds1['mail'])
+        mailUnique = Pds.objects.filter(deleted=False, mail=pds1['mail'])
         if len(mailUnique) == 0:
             pds1_serializer = pdsSerializers(data=pds1)
             if pds1_serializer.is_valid():
@@ -74,7 +74,7 @@ class details_pds(GenericAPIView):
         except Pds.DoesNotExist:
             return JsonResponse({'message': 'Ce PDS n\'existe pas'}, status=status.HTTP_404_NOT_FOUND)
         # Vérifie que le mail est unique et exclu le PDS en cours de modification
-        mailUnique = Pds.objects.all().filter(supprimer=False, mail=data['mail']).exclude(id=pds1.id)
+        mailUnique = Pds.objects.filter(deleted=False, mail=data['mail']).exclude(id=pds1.id)
         if len(mailUnique) == 0:
             # Met à jour les champs modifiés
             pds1.prenom = data.get("prenom", pds1.prenom)
