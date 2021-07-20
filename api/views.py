@@ -36,27 +36,20 @@ class details_pds(viewsets.ViewSet):
     def partial_update(self, request, pk):
         queryset = Pds.objects.get(pk=pk)
         # Recupère les données envoyés
-        new_pds_serializer = pdsSerializers(queryset, data=request.data, partial=True)
-        if new_pds_serializer.is_valid():
-            new_pds_serializer.save()
-            return Response(new_pds_serializer.data, status=status.HTTP_200_OK)
-        return Response(new_pds_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        update_pds_serializer = pdsSerializers(queryset, data=request.data, partial=True)
+        if update_pds_serializer.is_valid():
+            update_pds_serializer.save()
+            return Response(update_pds_serializer.data, status=status.HTTP_200_OK)
+        return Response(update_pds_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
+        queryset = Pds.objects.get(pk=pk)
         # Recupère les données envoyés
-        data = request.data
-
-        try:
-            pds1 = Pds.objects.get(pk=pk)
-        except Pds.DoesNotExist:
-            return JsonResponse({'message': 'Ce PDS n\'existe pas'}, status=status.HTTP_404_NOT_FOUND)
-
-        # Met à jour les champs modifiés
-        pds_serializer = pdsSerializers(pds1, data=data, partial=True)
-        if pds_serializer.is_valid():
-            pds_serializer.save()
-            return JsonResponse({'message':'PDS supprimé'}, status=status.HTTP_200_OK)
-        return JsonResponse(pds_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        delete_pds_serializer = pdsSerializers(queryset, data=request.data, partial=True)
+        if delete_pds_serializer.is_valid():
+            delete_pds_serializer.save()
+            return Response(delete_pds_serializer.data, status=status.HTTP_200_OK)
+        return JsonResponse(delete_pds_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class base_pds(viewsets.ViewSet):
     def list(self, request):
