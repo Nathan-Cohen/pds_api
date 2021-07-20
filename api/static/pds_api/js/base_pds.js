@@ -2,6 +2,7 @@
 var listePDS
 var idPDS
 
+
 //Recupere la liste des PDS
 function listePDS(){
     var url = '../../base_pds/api'
@@ -93,14 +94,13 @@ function editPds(id){
 function saveEditPds(action){
     if(action == "delete"){
         data = {
-        "supprimer": "True"
+        "deleted": "True"
         }
         data = JSON.stringify(data);
         var url = '../../fiche_profil/'+idPDS+'/'
         $.ajax({
-          type: "PATCH",
+          type: "DELETE",
           url: url,
-          timeout: 0,
           headers: {
             "Content-Type": "application/json"
           },
