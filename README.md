@@ -30,11 +30,11 @@ Ensuite, comme s’il a été réellement supprimé de la base de données, il n
 * **Data Params**
 
   {
-  "prenom": "string",
-  "nom": "string",
-  "mail": "string",
-  "adresse": "string",
-  "supprimer": "string"
+  "firstname": "string",
+  "lastname": "string",
+  "email": "string",
+  "adsress": "string",
+  "deleted": "string"
 }
 
 * **Success Response:**
