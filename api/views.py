@@ -18,7 +18,7 @@ class pdsListe(viewsets.ViewSet):
         return Response(list_pds_serializer.data)
 
     # Créer un nouveau PDS
-    def post(self, request):
+    def create(self, request):
         new_pds_serializer = pdsSerializers(data=request.data)
         if new_pds_serializer.is_valid():
             new_pds_serializer.save()
@@ -27,23 +27,30 @@ class pdsListe(viewsets.ViewSet):
 
 class details_pds(viewsets.ViewSet):
     # Affiche le detail d'un PDS par ID
-    def get(self, request, pk):
+    def list(self, request, pk):
         queryset = Pds.objects.filter(pk=pk)
         list_pds_serializer = pdsSerializers(queryset, many=True)
         return Response(list_pds_serializer.data, status=status.HTTP_200_OK)
 
     # Met à jour le PDS
     def partial_update(self, request, pk):
-        queryset = Pds.objects.get(pk=pk)
-        # Recupère les données envoyés
-        update_pds_serializer = pdsSerializers(queryset, data=request.data, partial=True)
-        if update_pds_serializer.is_valid():
-            update_pds_serializer.save()
-            return Response(update_pds_serializer.data, status=status.HTTP_200_OK)
-        return Response(update_pds_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            queryset = Pds.objects.get(pk=pk)
+            # Recupère les données envoyés
+            update_pds_serializer = pdsSerializers(queryset, data=request.data, partial=True)
+            if update_pds_serializer.is_valid():
+                update_pds_serializer.save()
+                return Response(update_pds_serializer.data, status=status.HTTP_200_OK)
+            return Response(update_pds_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Pds.DoesNotExist:
+            return JsonResponse({'message': 'Ce PDS n\'existe pas'}, status=status.HTTP_404_NOT_FOUND)
+
 
     def delete(self, request, pk):
-        queryset = Pds.objects.get(pk=pk)
+        try:
+            queryset = Pds.objects.get(pk=pk)
+        except Pds.DoesNotExist:
+            return JsonResponse({'message': 'Ce PDS n\'existe pas'}, status=status.HTTP_404_NOT_FOUND)
         # Recupère les données envoyés
         delete_pds_serializer = pdsSerializers(queryset, data=request.data, partial=True)
         if delete_pds_serializer.is_valid():
