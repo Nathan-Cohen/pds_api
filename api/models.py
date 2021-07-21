@@ -9,4 +9,4 @@ class Pds(models.Model):
     deleted = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.firstname
+        return self.__dict__

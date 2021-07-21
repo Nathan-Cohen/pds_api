@@ -34,29 +34,29 @@ class details_pds(viewsets.ViewSet):
 
     # Met à jour le PDS
     def partial_update(self, request, pk):
-        try:
-            queryset = Pds.objects.get(pk=pk)
+        queryset = Pds.objects.filter(pk=pk).first()
+        if queryset:
             # Recupère les données envoyés
             update_pds_serializer = pdsSerializers(queryset, data=request.data, partial=True)
             if update_pds_serializer.is_valid():
                 update_pds_serializer.save()
                 return Response(update_pds_serializer.data, status=status.HTTP_200_OK)
             return Response(update_pds_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        except Pds.DoesNotExist:
+        else:
             return JsonResponse({'message': 'Ce PDS n\'existe pas'}, status=status.HTTP_404_NOT_FOUND)
 
 
     def delete(self, request, pk):
-        try:
-            queryset = Pds.objects.get(pk=pk)
-        except Pds.DoesNotExist:
+        queryset = Pds.objects.filter(pk=pk).first()
+        if queryset:
+            # Recupère les données envoyés
+            delete_pds_serializer = pdsSerializers(queryset, data=request.data, partial=True)
+            if delete_pds_serializer.is_valid():
+                delete_pds_serializer.save()
+                return Response(delete_pds_serializer.data, status=status.HTTP_200_OK)
+            return JsonResponse(delete_pds_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
             return JsonResponse({'message': 'Ce PDS n\'existe pas'}, status=status.HTTP_404_NOT_FOUND)
-        # Recupère les données envoyés
-        delete_pds_serializer = pdsSerializers(queryset, data=request.data, partial=True)
-        if delete_pds_serializer.is_valid():
-            delete_pds_serializer.save()
-            return Response(delete_pds_serializer.data, status=status.HTTP_200_OK)
-        return JsonResponse(delete_pds_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class base_pds(viewsets.ViewSet):
     def list(self, request):
